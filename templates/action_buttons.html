@@ -1,0 +1,50 @@
+<style>
+  body { margin: 0; font-family: "Source Sans Pro", sans-serif; }
+  .actions { display: flex; gap: 1rem; }
+  .actions button {
+    flex: 1;
+    height: 42px;
+    border-radius: 0.5rem;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid rgba(49, 51, 63, 0.2);
+    background: #fff;
+    color: rgb(49, 51, 63);
+  }
+  .actions button:hover { border-color: #ff4b4b; color: #ff4b4b; }
+  .actions .primary { background: #ff4b4b; border-color: #ff4b4b; color: #fff; }
+  .actions .primary:hover { background: #ff3333; color: #fff; }
+</style>
+
+<div class="actions">
+  <button id="copy">📋 Copiar tudo</button>
+  <button id="download" class="primary">⬇️ Baixar .txt</button>
+</div>
+
+<script>
+  const text = __TEXT__;
+  const fileName = __FILE_NAME__;
+  const copyButton = document.getElementById("copy");
+
+  const copyFallback = () => {
+    const area = document.createElement("textarea");
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand("copy");
+    area.remove();
+  };
+
+  copyButton.onclick = async () => {
+    try { await navigator.clipboard.writeText(text); } catch { copyFallback(); }
+    copyButton.textContent = "✅ Copiado!";
+    setTimeout(() => (copyButton.textContent = "📋 Copiar tudo"), 2000);
+  };
+
+  document.getElementById("download").onclick = () => {
+    const url = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
+    const link = Object.assign(document.createElement("a"), { href: url, download: fileName });
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+</script>

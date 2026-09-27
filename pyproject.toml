@@ -1,0 +1,21 @@
+[project]
+name = "formatador-imersao"
+version = "0.1.0"
+description = "Extrai o texto do panfleto Imersão Diária (PDF) separado por dia da semana"
+requires-python = ">=3.12"
+dependencies = [
+    "pymupdf>=1.28.2",
+    "streamlit>=1.64.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
